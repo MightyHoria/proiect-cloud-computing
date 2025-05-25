@@ -1,0 +1,40 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Magazin CRUD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <h1>🛒 Magazinul Meu</h1>
+  </header>
+
+  <main class="container">
+    <section class="form-container">
+      <h2>Adaugă / Editează Produs</h2>
+      <form id="productForm">
+        <input type="text" id="name" placeholder="Nume produs" required />
+        <input type="text" id="description" placeholder="Descriere" />
+        <input type="number" id="price" placeholder="Preț (LEI)" min="0" required />
+        <button type="submit">Salvează</button>
+      </form>
+    </section>
+
+    <section class="product-list">
+      <!-- produse vor fi afișate aici -->
+    </section>
+  </main>
+
+  <footer>
+    <p>Proiect Cloud Computing &copy; 2025</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
