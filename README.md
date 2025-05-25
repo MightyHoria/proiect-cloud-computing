@@ -2,6 +2,10 @@ Proiect Cloud Computing
 
 Magazin in Cloud, Horia-Matei Bogdan, grupa 1132 
 
+### PREZENTARE PROIECT IN SCREENSHOTURILE DE MAI JOS ###
+
+### LINK PUBLICARE: https://proiect-cloud-computing-h599ro469-mightyhorias-projects.vercel.app/ ###
+
 
 Introducere
 
