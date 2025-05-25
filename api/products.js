@@ -1,30 +1,74 @@
-// api/products.js
-const express = require('express');
+const express  = require('express');
 const mongoose = require('mongoose');
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+const dotenv   = require('dotenv');
+const path     = require('path');
+
+// Încarcă variabilele din .env aflat în root
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const Product = require('../src/models/Product');
-const router = express.Router();
+const router  = express.Router();
 
-// CRUD routes:
-router.post('/', async (req, res) => { /* … */ });
-router.get('/',  async (req, res) => { /* … */ });
-router.put('/:id', async (req, res) => { /* … */ });
-router.delete('/:id', async (req, res) => { /* … */ });
+// === DEFINE CRUD ROUTES ===
 
-// Bootstrap Express & Mongo:
+// CREATE
+router.post('/', async (req, res) => {
+  try {
+    const p = new Product(req.body);
+    await p.save();
+    res.status(201).json(p);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+// READ
+router.get('/', async (_req, res) => {
+  try {
+    const list = await Product.find();
+    res.json(list);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+// UPDATE
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updated);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+// DELETE
+router.delete('/:id', async (req, res) => {
+  try {
+    await Product.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Produs șters cu succes' });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+// === SETUP SERVERLESS HANDLER ===
 const app = express();
 app.use(express.json());
 app.use('/api/products', router);
 
-let conn;
-module.exports = async (req, res) => {
-  if (!conn) {
-    conn = mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+// Conectare Mongo odată
+let isConnected = false;
+async function connectDB() {
+  if (!isConnected) {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('🟢 Conectat la MongoDB Atlas');
+    isConnected = true;
   }
+}
+
+// Exportăm handler-ul pentru Vercel
+module.exports = async (req, res) => {
+  await connectDB();
   return app(req, res);
 };
